@@ -1,0 +1,31 @@
+eureka:
+  client:
+    fetchRegistry: true
+    registerWithEureka: true
+    serviceUrl:
+      defaultZone: http://localhost:9000/eureka
+  instance:
+    instance-id: ${spring.application.name}:${instanceId:${random.value}}
+    preferIpAddress: true
+server:
+  port: 0
+spring:
+  application:
+    name: filter-service
+  data:
+    mongodb:
+      database: inventory
+      host: localhost
+      uri: mongodb://localhost:27017
+  kafka:
+    consumer:
+# //direkt olarak ilk f?rsatta datay? çek demek. bunun tüm configurasyonlar?n? spring cloud yap?yor orada load balancing yap?yor.
+      auto-offset-reset: earliest
+      bootstrap-servers: localhost:9092
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      properties:
+        spring:
+          json:
+            trusted:
+              packages: '*'
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
